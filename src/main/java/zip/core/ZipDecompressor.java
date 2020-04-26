@@ -31,7 +31,9 @@ public class ZipDecompressor {
     }
 
     public ZipDecompressor() {
-        this(ZipConfigurator.getBufferSize(), ZipConfigurator.getCharset(), ZipConfigurator.isCoverageMode());
+        this(ZipConfigurator.getBufferSize()
+                , ZipConfigurator.getCharset()
+                , ZipConfigurator.isCoverageMode());
     }
 
 
@@ -54,10 +56,28 @@ public class ZipDecompressor {
 
 
     /**
-     * 将zip文件解压至该zip文件所在目录
-     *
-     * @param source zip文件
+     * 解压多个文件到目标文件夹
+     * @param sources 文件数组
+     * @param targetDir 到目标文件夹
      */
+    public void unpackFiles(File[] sources,File targetDir) {
+        if (sources == null || sources.length == 0) {
+            return;
+        }
+        for (File source : sources) {
+            try {
+                unpack(source, targetDir);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }
+    }
+
+        /**
+         * 将zip文件解压至该zip文件所在目录
+         *
+         * @param source zip文件
+         */
     public void unpack(File source) {
         if(source.exists()||source.isDirectory()){
             try {
@@ -78,24 +98,6 @@ public class ZipDecompressor {
         }
     }
 
-    /**
-     * 解压多个文件到目标文件夹
-     * @param sources 文件数组
-     * @param targetDir 到目标文件夹
-     */
-    public void unpackFiles(File[] sources,File targetDir) {
-        if (sources == null||sources.length==0) {
-            return ;
-        }
-        for(File source : sources){
-            try {
-                unpack(source, targetDir);
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-        }
-
-    }
 
     /**
      * 解压zip文件至指定目录
@@ -128,7 +130,7 @@ public class ZipDecompressor {
      */
     private void decompress(File source, File targetDir) throws IOException {
 
-        try (ZipFile zipFile = new ZipFile(source, charset);) {
+        try (ZipFile zipFile = new ZipFile(source, charset)) {
             Enumeration entries = zipFile.entries();
             while (entries.hasMoreElements()) {
                 ZipEntry entry = (ZipEntry) entries.nextElement();
@@ -162,7 +164,7 @@ public class ZipDecompressor {
                     //开始读取Zip文件并写入
                     try (
                             BufferedInputStream bin = new BufferedInputStream(zipFile.getInputStream(entry), bufferSize);
-                            BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream(targetFile), bufferSize);
+                            BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream(targetFile), bufferSize)
                     ) {
                         int len;
                         byte[] buf = new byte[bufferSize];

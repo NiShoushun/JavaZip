@@ -1,5 +1,6 @@
 package zip.config;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -22,7 +23,7 @@ public class ZipConfigurator {
 
     //加载类时读取配置文本内容，将信息读取到java.util.Properties对象中
     static {
-        try(InputStream inputStream = Object.class.getResourceAsStream("/zip.config");) {
+        try(InputStream inputStream = Object.class.getResourceAsStream("/zip.config")) {
             properties.load(inputStream);
         } catch (IOException e) {
             System.err.println("读取配置文件异常，程序将会使用默认参数.");
@@ -74,7 +75,9 @@ public class ZipConfigurator {
     }
 
     public static  void setBufferSize(int bufferSize){
+        System.out.println("原"+bufferSize);
         properties.setProperty(BUFFER_SIZE_PROPERTIES_NAME, String.valueOf(bufferSize(bufferSize)));
+        System.out.println("后"+properties.getProperty(BUFFER_SIZE_PROPERTIES_NAME));
 
     }
 
@@ -94,7 +97,7 @@ public class ZipConfigurator {
         String bufferSizeValue;
         try {
             if ((bufferSizeValue = properties.getProperty(BUFFER_SIZE_PROPERTIES_NAME)) != null) {
-                return bufferSize(Integer.parseInt(bufferSizeValue));
+                return Integer.parseInt(bufferSizeValue);
             }
         }catch (Exception e){
             System.err.println("读取bufferSize异常，使用默认值"+DEFAULT_BUFFER_SIZE);
@@ -159,9 +162,6 @@ public class ZipConfigurator {
      */
     public  static int bufferSize(int size) {
         String str;
-        if(( str= properties.getProperty(BUFFER_SIZE_PROPERTIES_NAME))!=null){
-            size = Integer.parseInt(str);
-        }
         // 将size限制最大缓冲容量与最小缓冲容量之间
         size = size > MAXIMUM_BUFFER_SIZE ? MAXIMUM_BUFFER_SIZE : Math.max(size, MINIMUM_BUFFER_SIZE);
         int n = size;

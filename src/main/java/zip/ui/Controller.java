@@ -1,11 +1,9 @@
 package zip.ui;
 
 import com.sun.javafx.collections.ObservableListWrapper;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import zip.Main;
@@ -117,7 +115,7 @@ public class Controller extends ClientUiComponents implements Initializable {
                 workLock.unlock();
                 event.consume();
                 long endTime = System.currentTimeMillis();
-                String timeCost = "共耗时："+(endTime-startTime)%1000+"s";
+                String timeCost = "共耗时："+(double)(endTime-startTime)/1000+"s\n";
                 System.out.println(timeCost);
                 msgBox.appendText(timeCost);
             }
@@ -161,9 +159,9 @@ public class Controller extends ClientUiComponents implements Initializable {
                 String targetPath = this.targetDir.getText();
                 File target = new File(targetPath);
                 // 如果目标不是目录
-                if(!target.isDirectory()){
-                    System.err.println("目标文件已存在");
-                    msgBox.appendText("目标文件已存在/n");
+                if(target.exists()&&!target.isDirectory()){
+                    System.err.println("输出路径为文件");
+                    msgBox.appendText("输出路径为文件/n");
                     return;
                 }
                 ZipDecompressor zipDecompressor = new ZipDecompressor();
@@ -173,13 +171,13 @@ public class Controller extends ClientUiComponents implements Initializable {
                 System.out.println(finishMsg);
                 msgBox.appendText(finishMsg);
             }catch (Exception e){
-
+                e.printStackTrace();
             }finally {
                 // 解锁
                 workLock.unlock();
                 event.consume();
                 long endTime = System.currentTimeMillis();
-                String timeCost = "共耗时："+(endTime-startTime)%1000+"s";
+                String timeCost = "共耗时："+(double)(endTime-startTime)/1000+"s\n";
                 System.out.println(timeCost);
                 msgBox.appendText(timeCost);
             }
@@ -282,25 +280,32 @@ public class Controller extends ClientUiComponents implements Initializable {
             String level;
             System.out.println(msg.append(this.levelTextField.getText()));
             if ((level = this.levelTextField.getText()) != null && !"".equals(level.trim())) {
-                System.out.println("设置压缩等级：" + level);
                 ZipConfigurator.setLevel(Integer.parseInt(level));
+                level = String.valueOf(ZipConfigurator.getLevel());
+                System.out.println(msg.append("设置压缩等级：").append(level).append("\n"));
+                this.levelTextField.setText(level);
             }
 
             String charset;
             if ((charset = this.charSetTextField.getText()) != null && !"".equals(charset.trim())) {
-                System.out.println(msg.append("设置编码格式：").append(charset));
                 ZipConfigurator.setCharset(Charset.forName(charset));
+                charset = ZipConfigurator.getCharset().name();
+                System.out.println(msg.append("设置编码格式：").append(charset).append("\n"));
+                this.charSetTextField.setText(charset);
             }
             String bufferSize;
             if ((bufferSize = this.bufferSizeTextField.getText()) != null && !"".equals(bufferSize.trim())) {
-                System.out.println(msg.append("设置缓冲区大小：").append(bufferSize));
                 ZipConfigurator.setBufferSize(Integer.parseInt(bufferSize));
+                bufferSize = String.valueOf(ZipConfigurator.getBufferSize());
+                System.out.println(msg.append("设置缓冲区大小：").append(bufferSize).append("\n"));
+                this.bufferSizeTextField.setText(bufferSize);
             }
             boolean coverageModel = this.coverageModelCB.isSelected();
-            System.out.println(msg.append("覆盖模式：").append(coverageModel ? "开启" : "关闭"));
             ZipConfigurator.setCoverageModel(coverageModel);
+            System.out.println(msg.append("覆盖模式：").append(ZipConfigurator.isCoverageMode() ? "开启" : "关闭"+"\n"));
         } catch (NumberFormatException e) {
-            System.err.println("设置错误，请重新检查");
+            msgBox.appendText("设置错误，请重新检查\n");
+            System.err.println("设置错误，请重新检查\n");
         }
         msgBox.appendText(msg.toString());
         event.consume();
