@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="497.0" prefWidth="618.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="zip.ui.Controller">
+    <ListView fx:id="sourceFileListView" layoutX="15.0" layoutY="45.0" prefHeight="346.0" prefWidth="271.0" />
+    <Button fx:id="chooseFileBtn" layoutX="219.0" layoutY="19.0" mnemonicParsing="false" onAction="#chooseFile" prefHeight="23.0" prefWidth="64.0" text="添加文件" />
+    <Button fx:id="startCompressBtn" layoutX="524.0" layoutY="438.0" mnemonicParsing="false" onAction="#startCompress" prefHeight="23.0" prefWidth="79.0" text="开始压缩" />
+    <TextField fx:id="targetDir" layoutX="15.0" layoutY="438.0" prefHeight="23.0" prefWidth="218.0" promptText="压缩/解压至..." />
+    <TextField fx:id="levelTextField" layoutX="356.0" layoutY="20.0" prefHeight="23.0" prefWidth="94.0" promptText="默认6（1-9）" />
+    <Button fx:id="setterBtn" layoutX="556.0" layoutY="64.0" mnemonicParsing="false" onAction="#setParameter" prefHeight="18.0" prefWidth="48.0" text="设置" />
+    <TextField fx:id="charSetTextField" layoutX="509.0" layoutY="20.0" prefHeight="23.0" prefWidth="94.0" promptText="默认UTF-8" />
+    <TextField fx:id="bufferSizeTextField" layoutX="356.0" layoutY="64.0" prefHeight="23.0" prefWidth="94.0" promptText="默认1024" />
+    <CheckBox fx:id="coverageModelCB" layoutX="460.0" layoutY="68.0" mnemonicParsing="false" text="覆盖原文件" />
+    <Button fx:id="chooseDirBtn" layoutX="147.0" layoutY="19.0" mnemonicParsing="false" onAction="#chooseDir" text="添加目录" />
+    <Button fx:id="removeFileBtn" layoutX="156.0" layoutY="395.0" mnemonicParsing="false" onAction="#removeFile" prefHeight="18.0" prefWidth="126.0" text="删除选中目录或文件" />
+    <Text layoutX="295.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="压缩规格" />
+    <Text layoutX="460.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="编码格式" />
+    <Text layoutX="295.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="缓冲区大小" />
+    <Button fx:id="startDecompressBtn" layoutX="296.0" layoutY="438.0" mnemonicParsing="false" onAction="#startDecompress" prefHeight="23.0" prefWidth="79.0" text="开始解压" />
+    <Label layoutX="15.0" layoutY="24.0" text="选择的文件" />
+    <TextArea fx:id="msgBox" layoutX="295.0" layoutY="105.0" prefHeight="286.0" prefWidth="311.0" promptText="消息" />
+    <Button fx:id="clearFilesBtn" layoutX="14.0" layoutY="395.0" mnemonicParsing="false" onAction="#clearFiles" prefHeight="23.0" prefWidth="41.0" text="清空" />
+    <Button fx:id="chooseTargetBtn" layoutX="235.0" layoutY="438.0" mnemonicParsing="false" onAction="#chooseTarget" prefHeight="23.0" prefWidth="48.0" text="选择" />
+    <Text fx:id="errMsg" layoutX="296.0" layoutY="410.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="241.240234375" />
+    <Text layoutX="179.0" layoutY="488.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Author: nishoushun   Powered by javaFX" />
+    <Button fx:id="clearMsgBtn" layoutX="541.0" layoutY="395.0" mnemonicParsing="false" onAction="#clearMsg" text="清空消息" />
+</Pane>
